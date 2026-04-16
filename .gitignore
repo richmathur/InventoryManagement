@@ -1,5 +1,18 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+# --- Angular / Node ---
+node_modules/
+dist/
+.angular/
+npm-debug.log*
+yarn-error.log*
+.editorconfig
+.swp
+
+# --- OS specific ---
+.DS_Store
+Thumbs.db
+
 # Compiled output
 /dist
 /tmp
@@ -28,6 +41,14 @@ yarn-error.log
 !.vscode/extensions.json
 !.vscode/mcp.json
 .history/*
+bin/
+obj/
+.vs/
+.vscode/
+*.user
+*.suo
+*.db
+appsettings.Development.json
 
 # Miscellaneous
 /.angular/cache
