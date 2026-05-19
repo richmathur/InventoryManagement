@@ -1,0 +1,14 @@
+<div class="card mb-4">
+      <p-menubar [model]="items">
+        <ng-template pTemplate="start">
+          <div class="flex align-items-center gap-2 px-2">
+            <i class="pi pi-database text-primary text-2xl"></i>
+            <span class="font-bold text-xl text-primary">AssetTracker</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="end">
+          <button pButton label="Logout" icon="pi pi-sign-out" 
+                  class="p-button-text p-button-danger" (click)="logout()"></button>
+        </ng-template>
+      </p-menubar>
+    </div>

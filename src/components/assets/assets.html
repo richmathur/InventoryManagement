@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="asset-container">
   <div class="header-section flex justify-content-between align-items-center mb-5">
     <div>
@@ -5,11 +6,12 @@
       <p class="text-600 mt-1">Manage and track your organization's hardware and software.</p>
     </div>
     <div class="actions">
-      <p-button 
-        label="New Asset" 
-        icon="pi pi-plus" 
-        severity="primary" 
-        (onClick)="showDialog()">
+      <p-button
+        label="New Asset"
+        icon="pi pi-plus"
+        severity="primary"
+        (onClick)="showDialog('add')"
+      >
       </p-button>
     </div>
   </div>
@@ -36,22 +38,25 @@
   </div>
 
   <div class="surface-card shadow-2 border-round p-4">
-    <p-table 
-      [value]="assets()" 
-      [paginator]="true" 
-      [rows]="10" 
+    <p-table
+      [value]="assets()"
+      [paginator]="true"
+      [rows]="10"
       [loading]="loading()"
       responsiveLayout="stack"
       styleClass="p-datatable-sm p-datatable-striped"
       [showCurrentPageReport]="true"
-      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-      
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    >
       <ng-template pTemplate="header">
         <tr>
-          <th pSortableColumn="assetName">Name <p-sortIcon field="assetName"></p-sortIcon></th>
-          <th pSortableColumn="serialNumber">Serial # <p-sortIcon field="serialNumber"></p-sortIcon></th>
+          <th pSortableColumn="assetName">Name<p-sortIcon field="assetName"></p-sortIcon></th>
+          <th pSortableColumn="serialNumber">
+            Serial # <p-sortIcon field="serialNumber"></p-sortIcon>
+          </th>
           <th>Category</th>
           <th>Status</th>
+          <th>Assign To</th>
           <th pSortableColumn="price">Value <p-sortIcon field="price"></p-sortIcon></th>
           <th class="text-center">Actions</th>
         </tr>
@@ -60,19 +65,30 @@
       <ng-template pTemplate="body" let-asset>
         <tr>
           <td>
-            <span class="p-column-title">Name</span>
             <span class="font-semibold text-900">{{ asset.assetName }}</span>
           </td>
-          <td><span class="p-column-title">Serial #</span>{{ asset.serialNumber }}</td>
-          <td><span class="p-column-title">Category</span>{{ asset.category?.categoryName || 'General' }}</td>
+          <td>{{ asset.serialNumber }}</td>
+          <td>{{ asset.category?.categoryName || 'General' }}</td>
           <td>
-            <span class="p-column-title">Status</span>
             <p-tag [value]="asset.status" [severity]="getSeverity(asset.status)"></p-tag>
           </td>
-          <td><span class="p-column-title">Value</span>{{ asset.price | currency:'INR' }}</td>
+          <td>{{ asset.employee?.fullName || 'Unassigned' }}</td>
+          <td>{{ asset.price | currency: 'INR' }}</td>
           <td class="text-center">
-            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="info" class="mr-2"></p-button>
-            <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"></p-button>
+            <p-button
+              icon="pi pi-pencil"
+              [rounded]="true"
+              [text]="true"
+              severity="info"
+              class="mr-2"
+              (onClick)="showDialog('edit', asset)"
+            ></p-button>
+            <p-button
+              icon="pi pi-trash"
+              [rounded]="true"
+              [text]="true"
+              severity="danger"
+            ></p-button>
           </td>
         </tr>
       </ng-template>
@@ -89,34 +105,76 @@
   </div>
 </div>
 
-<p-dialog 
-  header="Asset Details" 
-  [(visible)]="displayModal" 
-  [modal]="true" 
-  [breakpoints]="{'960px': '75vw'}" 
-  [style]="{width: '30vw'}" 
-  [draggable]="false" 
-  [resizable]="false">
-  
+<p-dialog
+  header="Asset Details"
+  [(visible)]="displayModal"
+  [modal]="true"
+  [breakpoints]="{ '960px': '75vw' }"
+  [style]="{ width: '30vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
   <form [formGroup]="assetForm" class="flex flex-column gap-3 mt-3">
     <div class="flex flex-column gap-2">
       <label for="assetName" class="font-bold">Asset Name</label>
       <input pInputText id="assetName" formControlName="assetName" placeholder="e.g. MacBook Pro" />
     </div>
-    
-    <div class="flex flex-column gap-2">
-      <label for="serialNumber" class="font-bold">Serial Number</label>
-      <input pInputText id="serialNumber" formControlName="serialNumber" placeholder="SN-12345" />
-    </div>
-
     <div class="flex flex-column gap-2">
       <label for="price" class="font-bold">Price (INR)</label>
       <input pInputText id="price" type="number" formControlName="price" />
     </div>
-
+     <div class="flex flex-column gap-2">
+      <label for="serialNumber" class="font-bold">Serial Number</label>
+      <input  pInputText id="serialNumber" formControlName="serialNumber" placeholder="e.g. ABC123" />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="categoryId" class="font-bold">Category</label>
+      <p-select
+        [options]="categories()"
+        formControlName="categoryId"
+        optionLabel="categoryName"
+        optionValue="categoryId"
+        [filter]="true"
+        filterBy="categoryName"
+        placeholder="Select a Category"
+      >
+      </p-select>
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="status" class="font-bold">Status</label>
+      <p-select
+        [options]="statusOptions"
+        formControlName="status"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select a Status"
+      >
+      </p-select>
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="employeeId" class="font-bold">Assign To</label>
+       <p-select
+        [options]="employees()"
+        formControlName="employeeId"
+        optionLabel="fullName"
+        optionValue="employeeId"
+        placeholder="Select an Employee"
+      >
+      </p-select>
+    </div>
     <div class="flex justify-content-end gap-2 mt-4">
-      <p-button label="Cancel" severity="secondary" [text]="true" (onClick)="displayModal.set(false)"></p-button>
-      <p-button label="Save Asset" icon="pi pi-check" (onClick)="saveAsset()" [disabled]="assetForm.invalid"></p-button>
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        [text]="true"
+        (onClick)="displayModal.set(false)"
+      ></p-button>
+      <p-button
+        label="Save Asset"
+        icon="pi pi-check"
+        (onClick)="onSubmit()"
+        [disabled]="assetForm.invalid"
+      ></p-button>
     </div>
   </form>
 </p-dialog>

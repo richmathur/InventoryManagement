@@ -1,0 +1,84 @@
+<div class="flex align-items-center justify-content-center min-h-screen w-full surface-ground">
+  <div
+    class="surface-card shadow-2 border-round border-left-3 border-blue-500 w-11 md:w-10 lg:w-8 overflow-hidden"
+  >
+    <div class="grid grid-nogutter">
+      <div class="col-12 md:col-5 p-5 flex flex-column justify-content-center">
+        <div class="text-center mb-5">
+            <p-toast></p-toast>
+          <i class="pi pi-box text-blue-500 text-5xl mb-3"></i>
+          <div class="text-900 text-3xl font-medium mb-2">Welcome Back</div>
+          <span class="text-600 font-medium">Asset Management System</span>
+          <button type="button" (click)="goToDashboard()">Go to Inventory</button>
+        </div>
+
+        <div class="flex flex-column gap-3">
+          <span class="p-input-icon-left">
+            <i class="pi pi-user"></i>
+            <input
+              pInputText
+              #user="ngModel"
+              [(ngModel)]="loginData.username"
+              required
+              name="username"
+              class="w-full"
+            />
+          </span>
+
+          @if (user.invalid && user.touched) {
+            <small class="p-error">Username is required.</small>
+          } @else {
+            <small class="text-600">Enter your employee ID</small>
+          }
+
+          <span class="p-input-icon-left">
+            <i class="pi pi-lock"></i>
+            <p-password #password="ngModel"
+              [(ngModel)]="loginData.password"
+              id="password"
+              placeholder="Password"
+              [feedback]="false"
+              [toggleMask]="true"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+            ></p-password>
+            
+          @if (password.invalid && password.touched) {
+            <small class="p-error">Password is required.</small>
+          } @else {
+            <small class="text-600">Enter your password</small>
+          }
+          </span>
+          <p-button type="button"
+            label="Sign In"
+            icon="pi pi-sign-in"
+            class="w-full"
+            styleClass="w-full" (onClick)="onSubmit()"
+          ></p-button>
+        </div>
+      </div>
+
+      <div class="col-12 md:col-2 flex align-items-center justify-content-center px-3">
+        <p-divider layout="vertical" class="hidden md:flex"><b>OR</b></p-divider>
+        <p-divider layout="horizontal" class="flex md:hidden" align="center"><b>OR</b></p-divider>
+      </div>
+
+      <div
+        class="col-12 md:col-5 p-5 flex flex-column align-items-center justify-content-center bg-blue-50"
+      >
+        <div class="text-center">
+          <h3 class="text-blue-700 text-2xl font-bold mb-3">New Here?</h3>
+          <p class="text-blue-600 line-height-3 mb-5">
+            Start tracking your company assets efficiently.
+          </p>
+          <p-button
+            label="Create Account"
+            icon="pi pi-user-plus"
+            severity="secondary"
+            styleClass="w-full px-5 border-blue-500 text-blue-500"
+          ></p-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
