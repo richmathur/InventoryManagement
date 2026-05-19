@@ -16,4 +16,9 @@ export class AssetsService{
   createAsset(asset: Asset): Observable<Asset> {
     return this.http.post<Asset>(this.apiUrl, asset);
   }
+  //Edit asset
+  updateAsset(assetId: number, asset: Asset): Observable<Asset> {
+    debugger
+    return this.http.put<Asset>(this.apiUrl + '/' + assetId, asset); // Replace with your API url, asset);
+  }
 }

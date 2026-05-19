@@ -1,0 +1,9 @@
+.login-container {
+    display: flex;
+    align-items: center;      /* Centers vertically */
+    justify-content: center;   /* Centers horizontally */
+    min-height: 100vh;         /* Forces container to full screen height */
+    width: 100%;               /* Forces container to full screen width */
+    margin: 0;
+    padding: 0;
+}

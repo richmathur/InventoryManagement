@@ -1,12 +1,13 @@
 export interface Asset {
-  assetID: number;
+  assetId: number;
   assetName: string;
   serialNumber: string;
   category?: {
-    categoryName: string;
+    categoryId: number;
   };
   employee?: {
     fullName: string;
+      employeeId: number;
   };
   status: string;
   purchaseDate: string;

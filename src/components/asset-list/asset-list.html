@@ -1,4 +1,7 @@
+<app-navbar></app-navbar>
+<div class="asset-list-container">
 Assets List Component Template
-@for (asset of assets(); track asset.assetID) {
+@for (asset of assets(); track asset.assetId) {
       <div>{{ asset.assetName }}</div>
     }
+</div>

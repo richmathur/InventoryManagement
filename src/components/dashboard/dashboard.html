@@ -1,0 +1,62 @@
+<!-- Navigation Bar Start-->
+<app-navbar></app-navbar>
+<!-- Navigation Bar End -->
+
+<div class="grid p-3">
+  <div class="col-12 md:col-4 lg:col-3">
+    <div class="card p-3 shadow-1 surface-card border-round">
+      <span class="block text-500 font-medium mb-3">Total Assets</span>
+      <div class="text-900 font-medium text-xl">{{ TotalAssets() }}</div>
+    </div>
+  </div>
+  <div class="col-12 md:col-4 lg:col-3">
+    <div class="card p-3 shadow-1 surface-card border-round border-left-3 border-orange-500">
+      <span class="block text-500 font-medium mb-3">Under Repair</span>
+      <div class="text-900 font-medium text-xl">{{ InRepairAssets() }}</div>
+    </div>
+  </div>
+
+  <div class="col-12 md:col-4 lg:col-3">
+    <div class="card p-3 shadow-1 surface-card border-round border-left-3 border-orange-500">
+      <span class="block text-500 font-medium mb-3">Available</span>
+      <div class="text-900 font-medium text-xl">{{ AvailableAssets() }}</div>
+    </div>
+  </div>
+  <div class="col-12 md:col-4 lg:col-3">
+    <div class="card p-3 shadow-1 surface-card border-round border-left-3 border-green-500">
+      <span class="block text-500 font-medium mb-3">In Use</span>
+      <div class="text-900 font-medium text-xl">{{ InUseAssets() }}</div>
+    </div>
+  </div>
+
+  <div class="col-12 lg:col-8">
+    <div class="card p-4 shadow-2 surface-card border-round" style="min-height: 400px">
+      <h2 class="mt-0">Inventory Overview</h2>
+      <p class="text-600">
+        Logged in as: <strong>{{ userRole() }}</strong>
+      </p>
+      <p-divider></p-divider>
+
+      @if (userRole() === 'Admin') {
+        <div class="admin-actions">
+          <p>Security Check: <span class="text-green-500">yWelcome, {{ displayUserName() }}! You logged in as {{ userRole() }}  .</span></p>
+          <button pButton label="System Logs" class="p-button-outlined mr-2"></button>
+          <button pButton label="Add New Asset" icon="pi pi-plus"></button>
+        </div>
+      } @else {
+        <div class="staff-actions">
+          <p>Welcome, {{ displayUserName() }}! You logged in as {{ userRole() }}  .</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="col-12 lg:col-4">
+    <div class="card p-4 shadow-2 surface-card border-round">
+      <h3 class="mt-0 text-center">Asset Distribution</h3>
+      <div class="chart-wrapper">
+        <!-- <p-chart type="doughnut" [data]="data" [options]="options"></p-chart>  -->
+      </div>
+    </div>
+  </div>
+</div>
